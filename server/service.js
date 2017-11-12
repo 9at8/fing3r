@@ -1,29 +1,54 @@
-const express = require('express')
-var fs = require('fs');
-const app = express()
+var app = require('express')()
+var io = require('socket.io')(49154)
+var fs = require('fs')
 
-app.get('/', (req, res) => {
-    res.send("Hello World!")
-})
+io.on('connection', function (socket) {
+  console.log("Someone connected!")
+});
 
-app.get('/finger/:fingerer/:fingeree', (req, res) => {
-  fs.writeFile(`/home/users/${req.params.fingerer}/config.finger`, `${req.params.fingeree}`, function(err) {
-    if(err) {
-        return console.log(err);
+app.get('/finger/:fingeree/:fingerer', (req, res) => {
+  fs.readFile(`/home/${req.params.fingerer}/.fing3ring.json`, (err, data) => {
+    if (err) {
+      data = []
+    } else {
+      data = JSON.parse(data)
     }
 
-    console.log("The file was saved!");
+    data.push({
+      username: req.params.fingeree,
+      time: new Date()
+    })
+
+    fs.writeFile(`/home/${req.params.fingerer}/.fing3ring.json`, JSON.stringify(data))
   });
 
-  fs.writeFile(`/home/users/${req.params.fingerer}/config.finger`, `${req.params.fingeree}`, function(err) {
-    if(err) {
-        return console.log(err);
+  fs.readFile(`/home/${req.params.fingeree}/.fing3r3d.json`, (err, data) => {
+    if (err) {
+      data = { users: [], orgasmLimit: 5 }
+    } else {
+      data = JSON.parse(data)
     }
 
-    console.log("The file was saved!");
+    data.users.push({
+      username: req.params.fingerer,
+      time: new Date()
+    })
+
+    const notifData = {
+      fingerer: req.params.fingerer,
+      fingeree: req.params.fingeree
+    }
+    
+    if ((data.users.length % data.orgasmLimit) === 0) {
+      io.emit('orgasm', notifData)
+    } else {
+      io.emit('finger', notifData)
+    }
+
+    fs.writeFile(`/home/${req.params.fingeree}/.fing3r3d.json`, JSON.stringify(data))
   });
+
+  res.send()
 })
 
-app.listen("49153", () => {
-    console.log("Listening on port 49153")
-})
+app.listen(49153, () => console.log("Listening on port 49153"))

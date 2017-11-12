@@ -1,3 +1,22 @@
 #!/bin/bash
 
-curl "localhost:49153"
+if [ $# -lt 1 ]; then
+    echo "Specify a user to finger!"
+    echo "Usage: $0 [user1, user2, ...]"
+    exit 1
+fi
+
+
+problems() {
+    echo "Well, this is embarassing!"
+    echo "There were some problems fingering $1"
+    echo "Try fingering someone else?"
+}
+
+FINGERER=$(whoami)
+
+for FINGEREE in $@; do
+    curl "localhost:49153/$FINGERER/$FINGEREE"
+    finger $FINGEREE
+done
+

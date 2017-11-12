@@ -4,6 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "nodemon": "^1.12.1",
+    "socket.io": "1.7.3"
+  },
+  "scripts": {
+    "start": "nodemon service.js --watch service.js"
   }
 }
