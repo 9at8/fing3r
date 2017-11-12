@@ -36,7 +36,8 @@ app.get('/finger/:fingeree/:fingerer', (req, res) => {
 
     const notifData = {
       fingerer: req.params.fingerer,
-      fingeree: req.params.fingeree
+      fingeree: req.params.fingeree,
+      notified: false
     }
     
     if ((data.users.length % data.orgasmLimit) === 0) {

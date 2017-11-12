@@ -3,6 +3,9 @@
 from gi.repository import Notify
 Notify.init("App Name")
 
+import json
+from os.path import expanduser
+
 # import logging
 # logging.getLogger('requests').setLevel(logging.WARNING)
 # logging.basicConfig(level=logging.DEBUG)

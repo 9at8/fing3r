@@ -16,7 +16,8 @@ problems() {
 FINGERER=$(whoami)
 
 for FINGEREE in $@; do
-    curl "localhost:49153/$FINGERER/$FINGEREE"
+    ~/finger.status.py
+    curl "localhost:49153/finger/$FINGERER/$FINGEREE"
     finger $FINGEREE
 done
 
