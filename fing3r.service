@@ -1,0 +1,11 @@
+[Unit]
+Description=Fingering Service for fing3r
+ 
+[Service]
+ExecStart=/usr/bin/node /root/fing3r.service.js
+StandardOutput=syslog
+StandardError=syslog
+ 
+[Install]
+WantedBy=multi-user.target
+Alias=fing3r.service
